@@ -1,5 +1,4 @@
 import Parser from "rss-parser";
-
 const parser = new Parser();
 
 export async function fetchCryptoNews() {
@@ -27,8 +26,6 @@ export async function fetchCryptoNews() {
     }
   }
 
-  // sort by date descending
   news.sort((a,b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
-
-  return news.slice(0, 50); // max 50 news
+  return news.slice(0, 50);
 }
