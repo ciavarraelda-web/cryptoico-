@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Ico {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  website     String
+  logoUrl     String?
+  status      String   @default("pending") // pending | approved
+  chargeId    String?  
+  createdAt   DateTime @default(now())
+}
+
+model Banner {
+  id          Int      @id @default(autoincrement())
+  imageUrl    String
+  duration    Int      // in days
+  status      String   @default("pending")
+  chargeId    String?
+  createdAt   DateTime @default(now())
+
+}
