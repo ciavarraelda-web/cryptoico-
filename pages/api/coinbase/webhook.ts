@@ -22,15 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (event.type === "charge:confirmed") {
     const { type, id } = event.data.metadata;
 
-    if (type === "ico") {
-      await prisma.ico.update({ where: { id: Number(id) }, data: { status: "approved" } });
-      console.log(`✅ ICO #${id} approved`);
-    } else if (type === "banner") {
-      await prisma.banner.update({ where: { id: Number(id) }, data: { status: "approved" } });
-      console.log(`✅ Banner #${id} approved`);
-    }
+    if (type === "ico") await prisma.ico.update({ where: { id: Number(id) }, data: { status: "approved" } });
+    else if (type === "banner") await prisma.banner.update({ where: { id: Number(id) }, data: { status: "approved" } });
   }
 
-  res.status(200).json({ received: tr
-    ue });
-        }
+  res.status(200).json({ received: true });
+}
