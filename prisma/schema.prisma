@@ -21,9 +21,8 @@ model Ico {
 model Banner {
   id          Int      @id @default(autoincrement())
   imageUrl    String
-  duration    Int      // in days
+  duration    Int      // days
   status      String   @default("pending")
   chargeId    String?
   createdAt   DateTime @default(now())
-
 }
