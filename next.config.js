@@ -6,6 +6,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
+  images: {
+    domains: ['coinicons-api.vercel.app', 'via.placeholder.com'],
+  },
 }
 
 module.exports = nextConfig
