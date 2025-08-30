@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "vercel-build": "npm install && next build"
+    "vercel-build": "next build"
   },
   "dependencies": {
     "next": "^14.0.0",
@@ -17,10 +17,10 @@
     "@prisma/client": "^5.2.0"
   },
   "devDependencies": {
+    "typescript": "^5.0.0",
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "typescript": "^5.0.0"
+    "@types/react-dom": "^18.0.0"
   },
   "engines": {
     "node": ">=18.x"
