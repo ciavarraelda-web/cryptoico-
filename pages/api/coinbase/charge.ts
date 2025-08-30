@@ -26,7 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       const amount = data.duration === 7 ? 150 : 100;
-
       charge = await createCharge(`Banner Promotion`, `Banner ${data.duration} days on CryptoICO.eu`, amount, "USDC", { type, id: banner.id });
       await prisma.banner.update({ where: { id: banner.id }, data: { chargeId: charge.id } });
     }
