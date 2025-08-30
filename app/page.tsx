@@ -1,32 +1,72 @@
-import { fetchCryptoNews } from "../lib/rss";
-import { PrismaClient } from "@prisma/client";
+"use client"
+import { useState } from "react"
 
-const prisma = new PrismaClient();
+export default function BannerPage() {
+  const [loading, setLoading] = useState(false)
+  const [duration, setDuration] = useState(3)
 
-export default async function Home() {
-  const news = await fetchCryptoNews();
-  const banners = await prisma.banner.findMany({ where: { status: "approved" } });
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+
+    try {
+      const formData = {
+        imageUrl: (e.currentTarget.elements.namedItem("imageUrl") as HTMLInputElement).value,
+        duration
+      }
+
+      const res = await fetch("/api/coinbase/charge", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "banner", data: formData })
+      })
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`)
+      }
+
+      const result = await res.json()
+
+      if (result.url) {
+        window.location.href = result.url
+      } else {
+        throw new Error("No URL returned from API")
+      }
+    } catch (error) {
+      console.error("Error:", error)
+      alert("Si è verificato un errore durante il pagamento. Riprova più tardi.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">CryptoICO News</h1>
-
-      {banners.length > 0 && (
-        <div className="mb-6">
-          {banners.map(b => (
-            <img key={b.id} src={b.imageUrl} alt="Banner" className="w-full mb-2 rounded" />
-          ))}
-        </div>
-      )}
-
-      <div className="space-y-4">
-        {news.map((n,i) => (
-          <a key={i} href={n.link} target="_blank" rel="noopener noreferrer" className="block p-4 border rounded hover:bg-gray-50">
-            <h2 className="font-bold">{n.title}</h2>
-            <p className="text-sm text-gray-500">{n.source} - {new Date(n.pubDate).toLocaleString()}</p>
-          </a>
-        ))}
-      </div>
+    <div className="max-w-xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">Submit Banner</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input 
+          type="url" 
+          name="imageUrl" 
+          placeholder="Banner Image URL" 
+          required 
+          className="w-full border p-2 rounded"
+        />
+        <select 
+          value={duration} 
+          onChange={e => setDuration(Number(e.target.value))} 
+          className="w-full border p-2 rounded"
+        >
+          <option value={3}>3 days - 100 USDC</option>
+          <option value={7}>7 days - 150 USDC</option>
+        </select>
+        <button 
+          type="submit" 
+          disabled={loading} 
+          className="bg-green-600 text-white px-4 py-2 rounded disabled:bg-gray-400"
+        >
+          {loading ? "Generating payment..." : `Pay ${duration === 3 ? 100 : 150} USDC`}
+        </button>
+      </form>
     </div>
-  );
+  )
 }
