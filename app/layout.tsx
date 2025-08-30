@@ -1,8 +1,8 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'CryptoICO',
-  description: 'La tua piattaforma per investimenti in criptovalute',
+  title: 'CryptoICO - Crypto News & Advertising Platform',
+  description: 'Real-time cryptocurrency news and advertising platform for ICOs and banner ads',
 }
 
 export default function RootLayout({
@@ -11,8 +11,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="it">
-      <body>{children}</body>
+    <html lang="en">
+      <body className="bg-gray-100">{children}</body>
     </html>
   )
 }
